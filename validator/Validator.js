@@ -8,11 +8,11 @@
 //     }
 //   }
 
-//   static checkIfInputIsNumber(e) {
-//     if (typeof e !== "number" || isNaN(e)) {
-//       throw new Error("is not a number");
-//     }
-//   }
+checkIfInputIsNumber(e){
+    if (typeof e !== "number" || isNaN(e)) {
+      throw new Error("is not a number");
+    }
+  }
 
 //   static checkPassword(password) {
 //     if (

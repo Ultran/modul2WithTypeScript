@@ -8,6 +8,8 @@
 // - zmianę nazwy, ceny lub rabatu
 // }
 
+import { stringify } from "querystring";
+import { callbackify } from "util";
 import { v4 as uuidv4 } from "uuid";
 
 const MAXIMUM_POSSIBLE_DISCOUNT_PCT: number = 0.8;
@@ -30,11 +32,13 @@ class Item {
     this.quantity = 1;
   }
 
-  update(key: string, value: string | number) {
-    this[key] = value;
-  }
+  // Problem
 
-  // tutaj key, value nie działa może interfejs?
+  // update(key: string, value: string | number) {
+  //   this[key] = value
+  // }
+
+  // tutaj key, value nie działa
 
   setDiscount(discount: number) {
     if (discount > MAXIMUM_POSSIBLE_DISCOUNT_PCT) {
@@ -61,6 +65,7 @@ class Item {
 }
 
 let item = new Item("pepegi", 150, ["obuwie"]);
+console.log(Object.keys(item));
 item.setDiscount(0.5);
 item.updatePrice(30);
 item.updateName("Jakub");
