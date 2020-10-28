@@ -34,14 +34,14 @@ class Item {
     this[key] = value;
   }
 
+  // tutaj key, value nie działa może interfejs?
+
   setDiscount(discount: number) {
     if (discount > MAXIMUM_POSSIBLE_DISCOUNT_PCT) {
       throw new Error("discount must be < 0.8 PCT");
     }
     this.discount = discount;
   }
-
-  // tutaj key, value nie działa może interfejs?
 
   updatePrice(value: number) {
     this.price = value;
@@ -65,6 +65,6 @@ item.setDiscount(0.5);
 item.updatePrice(30);
 item.updateName("Jakub");
 item.addNextCategory("spodnie");
-item.update("name", "piotr");
+// item.update("name", "piotr");
 
 export default Item;
