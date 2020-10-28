@@ -15,7 +15,7 @@ import { v4 as uuidv4 } from "uuid";
 const MAXIMUM_POSSIBLE_DISCOUNT_PCT: number = 0.8;
 
 class Item {
-  uuid: any;
+  uuid: string;
   name: string;
   price: number;
   categories: string[];
@@ -65,11 +65,12 @@ class Item {
 }
 
 let item = new Item("pepegi", 150, ["obuwie"]);
-console.log(Object.keys(item));
+// console.log(Object.keys(item));
 item.setDiscount(0.5);
 item.updatePrice(30);
 item.updateName("Jakub");
 item.addNextCategory("spodnie");
 // item.update("name", "piotr");
+console.log(item);
 
 export default Item;
