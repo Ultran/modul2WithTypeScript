@@ -12,7 +12,10 @@ class Item {
   quantity: number;
 
   constructor(name: string, price: number, initialCategory: string[]) {
-    // varlidacja
+    Validator.checkIfStringIsEmpty(name);
+    Validator.checkIfStringIsEmpty(initialCategory);
+    Validator.checkIfInputIsNumber(price);
+
     this.uuid = uuidv4();
     this.name = name;
     this.price = price;
@@ -21,22 +24,34 @@ class Item {
     this.quantity = 1;
   }
 
-  setValueOfClasProperty(key: string, value: string | number) {
-    if (typeof value === "string") {
-      Validator.checkIfInputIsNumber(value);
-    }
+  validateDuringUpdate(key: string, value: string | number) {
+    const isNotAvaiableKeys = !["name", "price", "discount"].includes(key);
+    if (isNotAvaiableKeys) {
+      throw new Error("not available keys");
+    } else if (typeof value === "number" && !isNaN(value)) {
+      if (key === "name") {
+        throw new Error("not possible key");
+      }
+      if (value < 0) {
+        throw new Error("no negative numbers");
+      }
+      if (key === "discount" || value > MAXIMUM_POSSIBLE_DISCOUNT_PCT) {
+        throw new Error("discount must be < 0.8 PCT");
+      }
+    } else if (typeof value === "string" && value !== "") {
+      if (key !== "name") {
+        throw new Error("not possible key");
+      }
+    } else throw new Error("invorrect data, check key and value");
+  }
 
+  setValueOfClasProperty(key: string, value: string | number) {
+    this.validateDuringUpdate(key, value);
     Object.assign(this, { [key]: value });
   }
 
-  setDiscount(discount: number) {
-    if (discount > MAXIMUM_POSSIBLE_DISCOUNT_PCT) {
-      throw new Error("discount must be < 0.8 PCT");
-    }
-    this.discount = discount;
-  }
-
   addNextCategory(value: string) {
+    Validator.checkIfStringIsEmpty(value);
     const newCategoryToLowerCase: string = value.toLowerCase();
     const lowercaseCategories: string[] = [...this.categories].map((el) =>
       el.toLowerCase()
@@ -47,12 +62,7 @@ class Item {
 }
 
 let item: any = new Item("pepegi", 150, ["obuwie"]);
-// console.log(Object.keys(item));
-item.setDiscount(0.5);
-item.updatePrice(30);
-item.updateName("Jakub");
 item.addNextCategory("spodnie");
-item.update("price", 30);
-// console.log(item);
+item.setValueOfClasProperty("price", 30);
 
 export default Item;
