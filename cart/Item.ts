@@ -1,16 +1,5 @@
-// Obiekt charakteryzujący przedmiot:
-// class CartItem {
-// Ma miec: Nazwę, Kategorię, Cenę, Rabat % na przedmiot, uuid
-// Ma umożliwiać:
-// - modyfikować cenę przedmiotu
-// - określać jego rabat procentowy
-// - dodawać produkt do kategorii
-// - zmianę nazwy, ceny lub rabatu
-// }
-
-import { stringify } from "querystring";
-import { callbackify } from "util";
 import { v4 as uuidv4 } from "uuid";
+import Validator from "../validator/Validator";
 
 const MAXIMUM_POSSIBLE_DISCOUNT_PCT: number = 0.8;
 
@@ -32,26 +21,19 @@ class Item {
     this.quantity = 1;
   }
 
-  // Problem
+  setValueOfClasProperty(key: string, value: string | number) {
+    if (typeof value === "string") {
+      Validator.checkIfInputIsNumber(value);
+    }
 
-  // update(key: string, value: string | number) {
-  //   this[key] = value
-  // }
-
-  // tutaj key, value nie działa
+    Object.assign(this, { [key]: value });
+  }
 
   setDiscount(discount: number) {
     if (discount > MAXIMUM_POSSIBLE_DISCOUNT_PCT) {
       throw new Error("discount must be < 0.8 PCT");
     }
     this.discount = discount;
-  }
-
-  updatePrice(value: number) {
-    this.price = value;
-  }
-  updateName(value: string) {
-    this.name = value;
   }
 
   addNextCategory(value: string) {
@@ -64,13 +46,13 @@ class Item {
   }
 }
 
-let item = new Item("pepegi", 150, ["obuwie"]);
+let item: any = new Item("pepegi", 150, ["obuwie"]);
 // console.log(Object.keys(item));
 item.setDiscount(0.5);
 item.updatePrice(30);
 item.updateName("Jakub");
 item.addNextCategory("spodnie");
-// item.update("name", "piotr");
-console.log(item);
+item.update("price", 30);
+// console.log(item);
 
 export default Item;

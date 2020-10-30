@@ -1,7 +1,7 @@
-import item1 from "./Item";
+import cart from "./Cart";
 function main() {
   try {
-    console.log(item1);
+    console.log(cart);
   } catch (err) {
     console.error(err.message);
   }
