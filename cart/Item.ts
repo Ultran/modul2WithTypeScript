@@ -3,52 +3,72 @@ import Validator from "../validator/Validator";
 
 const MAXIMUM_POSSIBLE_DISCOUNT_PCT: number = 0.8;
 
-class Item {
+interface ItemConstructor {
+  new (name: string, price: number, categories: string[]): ItemInterface;
+}
+
+interface ItemInterface {
   uuid: string;
   name: string;
   price: number;
   categories: string[];
   discount: number;
   quantity: number;
+  addNextCategory(value: string): void;
 
-  constructor(name: string, price: number, initialCategory: string[]) {
-    Validator.checkIfStringIsEmpty(name);
-    Validator.checkIfStringIsEmpty(initialCategory);
-    Validator.checkIfInputIsNumber(price);
+  // new (name: string, price: number, initialCategory: string[]): void;
+  // wszystkie props
+  // wszystkie metody
+}
+class Item implements ItemInterface {
+  name: string;
+  discount = 0;
+  uuid = uuidv4();
+  price: number;
+  quantity = 1;
+  categories: string[];
 
-    this.uuid = uuidv4();
+  constructor(name: string, price: number, categories: string[]) {
     this.name = name;
     this.price = price;
-    this.categories = initialCategory;
-    this.discount = 0;
-    this.quantity = 1;
+    this.categories = categories;
+
+    // Validator.checkIfStringIsEmpty(name);
+    // Validator.checkIfStringIsEmpty(initialCategory);
+    // Validator.checkIfInputIsNumber(price);
   }
 
-  validateDuringUpdate(key: string, value: string | number) {
-    const isNotAvaiableKeys = !["name", "price", "discount"].includes(key);
-    if (isNotAvaiableKeys) {
-      throw new Error("not available keys");
-    } else if (typeof value === "number" && !isNaN(value)) {
-      if (key === "name") {
-        throw new Error("not possible key");
-      }
-      if (value < 0) {
-        throw new Error("no negative numbers");
-      }
-      if (key === "discount" || value > MAXIMUM_POSSIBLE_DISCOUNT_PCT) {
-        throw new Error("discount must be < 0.8 PCT");
-      }
-    } else if (typeof value === "string" && value !== "") {
-      if (key !== "name") {
-        throw new Error("not possible key");
-      }
-    } else throw new Error("invorrect data, check key and value");
-  }
+  // validateDuringUpdate(
+  //   key: "name" | "price" | "discount",
+  //   value: string | number
+  // ) {
+  //   // const isNotAvaiableKeys = !["name", "price", "discount"].includes(key);
+  //   if (typeof value === "number" && !isNaN(value)) {
+  //     if (key === "name") {
+  //       throw new Error("not possible key");
+  //     }
+  //     if (value < 0) {
+  //       throw new Error("no negative numbers");
+  //     }
+  //     if (key === "discount" || value > MAXIMUM_POSSIBLE_DISCOUNT_PCT) {
+  //       throw new Error("discount must be < 0.8 PCT");
+  //     }
+  //   }
 
-  setValueOfClasProperty(key: string, value: string | number) {
-    this.validateDuringUpdate(key, value);
-    Object.assign(this, { [key]: value });
-  }
+  //   if (typeof value === "string" && value !== "") {
+  //     if (key !== "name") {
+  //       throw new Error("not possible key");
+  //     }
+  //   }
+  // }
+
+  // setValueOfClasProperty(
+  //   key: "name" | "price" | "discount",
+  //   value: string | number
+  // ) {
+  //   this.validateDuringUpdate(key, value);
+  //   Object.assign(this, { [key]: value });
+  // }
 
   addNextCategory(value: string) {
     Validator.checkIfStringIsEmpty(value);
@@ -60,9 +80,6 @@ class Item {
     this.categories = Array.from(uniques);
   }
 }
-
 let item: any = new Item("pepegi", 150, ["obuwie"]);
-item.addNextCategory("spodnie");
-item.setValueOfClasProperty("price", 30);
 
 export default Item;

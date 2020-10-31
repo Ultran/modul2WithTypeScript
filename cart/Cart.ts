@@ -71,7 +71,6 @@ class Cart {
 
 let cart = new Cart();
 let item = new Item("pepegi", 150, ["obuwie"]);
-item.setValueOfClasProperty("price", 30);
 cart.addItemToCart(item);
 console.log(cart);
 
