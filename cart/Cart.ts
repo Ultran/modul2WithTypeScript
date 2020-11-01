@@ -70,9 +70,9 @@ class Cart {
 }
 
 let cart = new Cart();
-let item = new Item("pepegi", 150, ["obuwie"]);
+let item = new Item("pepegi", 50, "obuwie");
+
 cart.addItemToCart(item);
-console.log(cart);
 
 export default cart;
 // const item1 = new Item("sofixy", 100, "obuwie");

@@ -1,85 +1,64 @@
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 import { v4 as uuidv4 } from "uuid";
-import Validator from "../validator/Validator";
-
-const MAXIMUM_POSSIBLE_DISCOUNT_PCT: number = 0.8;
-
-interface ItemConstructor {
-  new (name: string, price: number, categories: string[]): ItemInterface;
-}
-
-interface ItemInterface {
+// import Validator from "../Validator.js";
+const MAXIMUM_POSSIBLE_DISCOUNT_PCT = 0.8;
+export default class Item {
   uuid: string;
   name: string;
   price: number;
   categories: string[];
   discount: number;
   quantity: number;
-  addNextCategory(value: string): void;
 
-  // new (name: string, price: number, initialCategory: string[]): void;
-  // wszystkie props
-  // wszystkie metody
-}
-class Item implements ItemInterface {
-  name: string;
-  discount = 0;
-  uuid = uuidv4();
-  price: number;
-  quantity = 1;
-  categories: string[];
-
-  constructor(name: string, price: number, categories: string[]) {
+  constructor(name: string, price: number, categories: string) {
+    this.uuid = uuidv4();
     this.name = name;
     this.price = price;
-    this.categories = categories;
-
-    // Validator.checkIfStringIsEmpty(name);
-    // Validator.checkIfStringIsEmpty(initialCategory);
-    // Validator.checkIfInputIsNumber(price);
+    this.categories = [categories];
+    this.discount = 0;
+    this.quantity = 1;
   }
 
-  // validateDuringUpdate(
-  //   key: "name" | "price" | "discount",
-  //   value: string | number
-  // ) {
-  //   // const isNotAvaiableKeys = !["name", "price", "discount"].includes(key);
-  //   if (typeof value === "number" && !isNaN(value)) {
-  //     if (key === "name") {
-  //       throw new Error("not possible key");
-  //     }
-  //     if (value < 0) {
-  //       throw new Error("no negative numbers");
-  //     }
-  //     if (key === "discount" || value > MAXIMUM_POSSIBLE_DISCOUNT_PCT) {
-  //       throw new Error("discount must be < 0.8 PCT");
-  //     }
-  //   }
 
-  //   if (typeof value === "string" && value !== "") {
-  //     if (key !== "name") {
-  //       throw new Error("not possible key");
-  //     }
-  //   }
-  // }
+  validateDuringUpdate(
+    key: "name" | "price" | "discount",
+    value: string | number
+  ) {
+    let valueIsEmpyString: boolean = value === "";
+    let valueIsNegativeNumber: boolean = value < 0;
+    let valueOfDiscountIsToHigh: boolean = value > MAXIMUM_POSSIBLE_DISCOUNT_PCT
 
-  // setValueOfClasProperty(
-  //   key: "name" | "price" | "discount",
-  //   value: string | number
-  // ) {
-  //   this.validateDuringUpdate(key, value);
-  //   Object.assign(this, { [key]: value });
-  // }
 
-  addNextCategory(value: string) {
-    Validator.checkIfStringIsEmpty(value);
-    const newCategoryToLowerCase: string = value.toLowerCase();
-    const lowercaseCategories: string[] = [...this.categories].map((el) =>
+    if (key === "name" && valueIsEmpyString) {
+        throw new Error("value is empty") }
+
+if (key === "price" || key === "discount") {
+  if (valueIsNegativeNumber) {
+    throw new Error("no negative numbers");
+}
+
+      if (key === "discount" || value > MAXIMUM_POSSIBLE_DISCOUNT_PCT) {
+        throw new Error("discount must be < 0.8 PCT");
+      }
+    } else if (typeof value === "string" && value !== "") {
+      if (key !== "name") {
+        throw new Error("not possible key");
+      }
+    } else throw new Error("invorrect data, check key and value");
+  }
+
+  changeNamePriceDiscount(key: "name" | "price" | "discount", value: string | number) {
+    this.validateDuringUpdate(key, value);
+    Object.assign(this, { [key]: value });
+    // this[key] = value;
+  }
+
+  addNextCategory(value: string): void {
+    const newCategoryToLowerCase = value.toLowerCase();
+    const lowercaseCategories = [...this.categories].map((el) =>
       el.toLowerCase()
     );
     const uniques = new Set([...lowercaseCategories, newCategoryToLowerCase]);
     this.categories = Array.from(uniques);
   }
 }
-let item: any = new Item("pepegi", 150, ["obuwie"]);
-
-export default Item;
