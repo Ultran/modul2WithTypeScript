@@ -59,7 +59,7 @@ class Cart {
     }, 0);
   }
 
-  suma() {
+  sumOfPrice() {
     this.sum.price = this.calculateTotal();
   }
 
