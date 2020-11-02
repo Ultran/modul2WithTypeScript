@@ -48,29 +48,32 @@ class Cart {
   }
 
   calculateTotal(): void {
-    let array = this.items;
+    this.sum = this.items.reduce(
+      (total: any, currentValue: any) => {
+        total.price =
+          total.price +
+          currentValue.price *
+            (1 - currentValue.discount) *
+            currentValue.quantity;
+        total.discount =
+          total.discount +
+          currentValue.discount * currentValue.price * currentValue.quantity;
+        total.quantity = total.quantity + currentValue.quantity;
 
-    array.reduce((total: any, currentValue: any) => {
-      let priceOfItem =
-        currentValue.price *
-        (1 - currentValue.discount) *
-        currentValue.quantity;
-      return total + priceOfItem;
-    }, 0);
-  }
-
-  sumOfPrice() {
-    this.sum.price = this.calculateTotal();
+        return total;
+      },
+      { price: 0, discount: 0, quantity: 0 }
+    );
   }
 }
 
 let cart = new Cart();
-let item = new Item("pepegi", 50, "obuwie");
+let item = new Item("pepegi", 100, "obuwie");
 let item2 = new Item("sofixy", 200, "obuwie");
-item.changeNamePriceDiscount("discount", 0.7);
+item.changeNamePriceDiscount("discount", 0.5);
 cart.addItemToCart(item);
 cart.addItemToCart(item2);
-cart.changeQuantity(item, 70);
+cart.changeQuantity(item, 2);
 
 cart.calculateTotal();
 
