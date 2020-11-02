@@ -1,7 +1,6 @@
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 import { v4 as uuidv4 } from "uuid";
-// import Validator from "../Validator.js";
-const MAXIMUM_POSSIBLE_DISCOUNT_PCT = 0.8;
+import MAXIMUM_POSSIBLE_DISCOUNT_PCT from "./helpers";
+
 export default class Item {
   uuid: string;
   name: string;
@@ -22,7 +21,7 @@ export default class Item {
   validateDuringUpdate(
     key: "name" | "price" | "discount",
     value: string | number
-  ) {
+  ): void {
     let valueIsEmpyString: boolean = value === "";
     let valueIsNegativeNumber: boolean = value < 0;
     let valueOfDiscountIsToHigh: boolean =
@@ -42,7 +41,7 @@ export default class Item {
   changeNamePriceDiscount(
     key: "name" | "price" | "discount",
     value: string | number
-  ) {
+  ): void {
     this.validateDuringUpdate(key, value);
     Object.assign(this, { [key]: value });
     // this[key] = value;
