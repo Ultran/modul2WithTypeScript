@@ -19,35 +19,30 @@ export default class Item {
     this.quantity = 1;
   }
 
-
   validateDuringUpdate(
     key: "name" | "price" | "discount",
     value: string | number
   ) {
     let valueIsEmpyString: boolean = value === "";
     let valueIsNegativeNumber: boolean = value < 0;
-    let valueOfDiscountIsToHigh: boolean = value > MAXIMUM_POSSIBLE_DISCOUNT_PCT
-
+    let valueOfDiscountIsToHigh: boolean =
+      value > MAXIMUM_POSSIBLE_DISCOUNT_PCT;
 
     if (key === "name" && valueIsEmpyString) {
-        throw new Error("value is empty") }
-
-if (key === "price" || key === "discount") {
-  if (valueIsNegativeNumber) {
-    throw new Error("no negative numbers");
-}
-
-      if (key === "discount" || value > MAXIMUM_POSSIBLE_DISCOUNT_PCT) {
-        throw new Error("discount must be < 0.8 PCT");
-      }
-    } else if (typeof value === "string" && value !== "") {
-      if (key !== "name") {
-        throw new Error("not possible key");
-      }
-    } else throw new Error("invorrect data, check key and value");
+      throw new Error("value is empty");
+    }
+    if ((typeof value === "number" && isNaN(value)) || valueIsNegativeNumber) {
+      throw Error("value is NaN or under 0");
+    }
+    if (key === "discount" && valueOfDiscountIsToHigh) {
+      throw new Error("discount must be < 0.8 PCT");
+    }
   }
 
-  changeNamePriceDiscount(key: "name" | "price" | "discount", value: string | number) {
+  changeNamePriceDiscount(
+    key: "name" | "price" | "discount",
+    value: string | number
+  ) {
     this.validateDuringUpdate(key, value);
     Object.assign(this, { [key]: value });
     // this[key] = value;

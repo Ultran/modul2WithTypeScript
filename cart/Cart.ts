@@ -1,12 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import Item from "./Item";
 
-// function checkIfObjectIsInstanceOfClass(instance, object) {
-//   if (!instance instanceof object) {
-//     throw new Error("item is not a instance of Class Item");
-//   }
-// }
-
 class Cart {
   uuid: string;
   items: any;
@@ -27,9 +21,10 @@ class Cart {
     };
   }
 
-  addItemToCart<T>(item: any) {
-    // checkIfObjectIsInstanceOfClass(item, Item);
-    const index = this.items.findIndex((e: any) => e.uuid === item.uuid);
+  addItemToCart(item: any): void {
+    const index: number = this.items.findIndex(
+      (e: any): boolean => e.uuid === item.uuid
+    );
     if (index === -1) {
       this.items.push(item);
     } else {
@@ -37,8 +32,7 @@ class Cart {
     }
   }
 
-  removeItemfromCart(item: any) {
-    // checkIfObjectIsInstanceOfClass(item, Item);
+  removeItemfromCart(item: any): void {
     const index = this.items.findIndex((e: any) => e.uuid === item.uuid);
     if (index === -1) {
       throw new Error("product is not in cart, or has been deleted already");
@@ -46,7 +40,29 @@ class Cart {
     this.items.splice(index, 1);
   }
 
-  // calculateTotal() {
+  changeQuantity(item: any, qty: number): void {
+    item.quantity = qty;
+    if (item.quantity <= 0) {
+      this.removeItemfromCart(item);
+    }
+  }
+
+  calculateTotal(): void {
+    let array = this.items;
+
+    array.reduce((total: any, currentValue: any) => {
+      let priceOfItem =
+        currentValue.price *
+        (1 - currentValue.discount) *
+        currentValue.quantity;
+      return total + priceOfItem;
+    }, 0);
+  }
+
+  suma() {
+    this.sum.price = this.calculateTotal();
+  }
+
   // ceny
   // discount
   // qty
@@ -71,8 +87,13 @@ class Cart {
 
 let cart = new Cart();
 let item = new Item("pepegi", 50, "obuwie");
-
+let item2 = new Item("sofixy", 200, "obuwie");
+item.changeNamePriceDiscount("discount", 0.7);
 cart.addItemToCart(item);
+cart.addItemToCart(item2);
+cart.changeQuantity(item, 70);
+
+cart.calculateTotal();
 
 export default cart;
 // const item1 = new Item("sofixy", 100, "obuwie");
