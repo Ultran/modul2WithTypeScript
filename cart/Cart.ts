@@ -62,27 +62,6 @@ class Cart {
   sumOfPrice() {
     this.sum.price = this.calculateTotal();
   }
-
-  // ceny
-  // discount
-  // qty
-
-  // .reduce(()=>{},{price:0, discount:0, quantity:0})
-  // TUTAJ NIE WIEDZIAŁEM O CO CHODZI...
-  // poniżej funkcja się sprawdza
-
-  // function sum(accumulator, currentValue) {
-  //   const priceToAdd =
-  //     currentValue.price *
-  //     currentValue.quantity *
-  //     (1 - currentValue.discount);
-  //   return accumulator + priceToAdd;
-  // }
-  // const finalPrice = this.items.reduce(sum, 0);
-  // return finalPrice;
-
-  // console.log(`cena twojego koszyka ${finalPrice}`);
-  // }
 }
 
 let cart = new Cart();
@@ -96,12 +75,3 @@ cart.changeQuantity(item, 70);
 cart.calculateTotal();
 
 export default cart;
-// const item1 = new Item("sofixy", 100, "obuwie");
-// const item2 = new Item("pepegi", 150, "obuwie");
-
-// console.log(cart.calculateTotal());
-// cart.changeQuantity(item1, -1); // - odejmij jedną sztukę
-
-// console.log(cart.calculateTotal());
-
-// Obiekt charakteryzujący przedmiot:
