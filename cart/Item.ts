@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import MAXIMUM_POSSIBLE_DISCOUNT_PCT from "./helpers";
 
-export default class Item {
+interface itemInterface {
   uuid: string;
   name: string;
   price: number;
@@ -9,16 +9,34 @@ export default class Item {
   discount: number;
   quantity: number;
 
+  validateDuringChange(
+    key: "name" | "price" | "discount",
+    value: string | number
+  ): void;
+  changeNamePriceDiscount(
+    key: "name" | "price" | "discount",
+    value: string | number
+  ): void;
+  addNextCategory(value: string): void;
+}
+
+// CZEMU WŁAŚCIWOŚĆI NIE WYSWIETLAJA SIE PO KOLEI???/???????>>>????/
+
+export default class Item implements itemInterface {
+  public uuid: string = uuidv4();
+  public name: string;
+  public price: number;
+  public categories: string[];
+  public discount: number = 0;
+  public quantity: number = 1;
+
   constructor(name: string, price: number, categories: string) {
-    this.uuid = uuidv4();
     this.name = name;
     this.price = price;
     this.categories = [categories];
-    this.discount = 0;
-    this.quantity = 1;
   }
 
-  validateDuringUpdate(
+  validateDuringChange(
     key: "name" | "price" | "discount",
     value: string | number
   ): void {
@@ -42,7 +60,7 @@ export default class Item {
     key: "name" | "price" | "discount",
     value: string | number
   ): void {
-    this.validateDuringUpdate(key, value);
+    this.validateDuringChange(key, value);
     Object.assign(this, { [key]: value });
     // this[key] = value;
   }

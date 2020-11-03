@@ -1,25 +1,28 @@
 import { v4 as uuidv4 } from "uuid";
 import Item from "./Item";
-
-class Cart {
+interface CartInterface {
   uuid: string;
   items: any;
   discountValue: number;
   discountCode: null | number;
   sum: object;
+  addItemToCart(item: any): void;
+  removeItemfromCart(item: any): void;
+  changeQuantity(item: any, qty: number): void;
+  calculateTotal(): void;
+}
+class Cart implements CartInterface {
+  uuid: string = uuidv4();
+  items: object[] = [];
+  discountValue: number = 0;
+  discountCode: null | number = null;
+  sum: object = {
+    price: 0,
+    quantity: 0,
+    discount: 0,
+  };
 
-  constructor() {
-    this.uuid = uuidv4();
-    this.items = [];
-    this.discountValue = 0;
-    this.discountCode = null;
-
-    this.sum = {
-      price: 0,
-      quantity: 0,
-      discount: 0,
-    };
-  }
+  constructor() {}
 
   addItemToCart(item: any): void {
     const index: number = this.items.findIndex(
