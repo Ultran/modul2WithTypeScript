@@ -72,9 +72,13 @@ class Library implements LibraryInterface {
   //   }
 }
 const library = new Library();
-let book = new Book("Trzej muszkieterowie", "dumas", "Książka o muszkieterach");
-console.log(book);
-library.addToAllBooksList(book);
+let book1 = new Book(
+  "Trzej muszkieterowie",
+  "dumas",
+  "Książka o muszkieterach"
+);
+console.log(book1);
+library.addToAllBooksList(book1);
 
 export default library;
 // const book1 = new Book("Medicus", "N.Gordon", "descriptions/description1.txt");
