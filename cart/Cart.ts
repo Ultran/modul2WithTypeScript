@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import Item from "./Item";
 interface CartInterface {
   uuid: string;
-  items: any;
+  items: object[];
   discountValue: number;
   discountCode: null | number;
   sum: object;
@@ -12,11 +12,11 @@ interface CartInterface {
   calculateTotal(): void;
 }
 class Cart implements CartInterface {
-  uuid: string = uuidv4();
+  uuid = uuidv4();
   items: object[] = [];
-  discountValue: number = 0;
-  discountCode: null | number = null;
-  sum: object = {
+  discountValue = 0;
+  discountCode = null;
+  sum = {
     price: 0,
     quantity: 0,
     discount: 0,

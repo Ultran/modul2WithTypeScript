@@ -2,10 +2,11 @@ import is, { any } from "is_js";
 import moment from "moment";
 
 export default class Validator {
-  static checkIfStringIsEmpty(e: any) {
-    if (typeof e !== "string" || e === "") {
-      throw new Error("Input is empty or used wrong characters");
+  static checkIfStringIsEmpty(value: string): void {
+    if (is.empty(value)) {
+      throw new Error("value is empty");
     }
+    // let stringIsEmpty = value = "";
   }
 
   static checkIfInputIsNumber(e: any) {

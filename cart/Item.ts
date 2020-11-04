@@ -23,12 +23,12 @@ interface itemInterface {
 // CZEMU WŁAŚCIWOŚĆI NIE WYSWIETLAJA SIE PO KOLEI???/???????>>>????/
 
 export default class Item implements itemInterface {
-  public uuid: string = uuidv4();
-  public name: string;
-  public price: number;
+  public uuid = uuidv4();
+  public name;
+  public price;
   public categories: string[];
-  public discount: number = 0;
-  public quantity: number = 1;
+  public discount = 0;
+  public quantity = 1;
 
   constructor(name: string, price: number, categories: string) {
     this.name = name;
