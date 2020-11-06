@@ -1,17 +1,26 @@
 import { v4 as uuidv4 } from "uuid";
-import Item from "./Item";
-interface CartInterface {
+import Item, {IItem} from "./Item";
+
+// interface IWithUUID{
+//   uuid: string;
+// }
+
+// function findByUuid(list:T[], item:T){
+// }
+
+interface ISum{}
+interface ICart {
   uuid: string;
-  items: object[];
+  items: IItem[];
   discountValue: number;
-  discountCode: null | number;
-  sum: object;
-  addItemToCart(item: any): void;
-  removeItemfromCart(item: any): void;
-  changeQuantity(item: any, qty: number): void;
+  discountCode: number | null;
+  sum: ISum;
+  addItemToCart(item: IItem): void;
+  removeItemfromCart(item: IItem): void;
+  changeQuantity(item: IItem, qty: number): void;
   calculateTotal(): void;
 }
-class Cart implements CartInterface {
+class Cart implements ICart {
   uuid = uuidv4();
   items: object[] = [];
   discountValue = 0;
@@ -58,9 +67,13 @@ class Cart implements CartInterface {
           currentValue.price *
             (1 - currentValue.discount) *
             currentValue.quantity;
+
+
         total.discount =
           total.discount +
           currentValue.discount * currentValue.price * currentValue.quantity;
+
+          
         total.quantity = total.quantity + currentValue.quantity;
 
         return total;
@@ -73,6 +86,7 @@ class Cart implements CartInterface {
 let cart = new Cart();
 let item = new Item("pepegi", 100, "obuwie");
 let item2 = new Item("sofixy", 200, "obuwie");
+
 item.changeNamePriceDiscount("discount", 0.5);
 cart.addItemToCart(item);
 cart.addItemToCart(item2);

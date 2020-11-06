@@ -1,35 +1,52 @@
-// import { v4 as uuidv4 } from "uuid";
-// import moment from "moment";
-// import Validator from "../Validator.js";
-// import Book from "./Book.js";
+import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
+import Book from "./Book";
+import { IBook } from "./Book";
 
-// const cashPenaltyForOneDayLate = 3;
-// function daysFromMiliseconds(ms) {
-//   return ms / 100 / 60 / 60 / 24 / 10;
-// }
+const cashPenaltyForOneDayLate = 3;
+function daysFromMiliseconds(ms: number) {
+  return ms / 100 / 60 / 60 / 24 / 10;
+}
 
-// export default class Booking {
-//   constructor() {
-//     this.uuid = uuidv4();
-//     this.rentingStartDate = moment().format("L");
-//     this.maxDateOfreturnBook = moment().subtract(8, "days").format("L");
-//     this.cashPenaltyForLate = 0;
-//   }
-//   rentBook(book, user) {
-//     Validator.checkIfInputIsInstanceOfObject(book, Book);
-//     Validator.checkIfStringIsEmpty(user);
-//     const booking = {
-//       bookingId: this.uuid,
-//       uuid: book.uuid,
-//       status: "active",
-//       title: book.title,
-//       author: book.author,
-//       user: user,
-//       startDate: this.rentingStartDate,
-//       maxDateOfReturn: this.maxDateOfreturnBook,
-//     };
-//     return booking;
-//   }
+export interface IbookingBook {
+  bookingId: string;
+  uuid: string;
+  status: "active" | "returned";
+  title: string;
+  author: string;
+  user: string;
+  startDate: string;
+  maxDateOfReturn: string;
+}
+
+export interface IBooking {
+  uuid: string;
+  rentingStartDate: string;
+  maxDateOfreturnBook: string;
+  cashPenaltyForLate: number;
+}
+
+export default class Booking implements IBooking {
+  uuid = uuidv4();
+  rentingStartDate: string = moment().format("L");
+  maxDateOfreturnBook: string = moment().subtract(8, "days").format("L");
+  cashPenaltyForLate: number = 0;
+  constructor() {}
+  rentBook(book: IBook, user: string): IbookingBook {
+    // Validator.checkIfStringIsEmpty(user);
+    const bookingBook: IbookingBook = {
+      bookingId: this.uuid,
+      uuid: book.uuid,
+      status: "active",
+      title: book.title,
+      author: book.author,
+      user: user,
+      startDate: this.rentingStartDate,
+      maxDateOfReturn: this.maxDateOfreturnBook,
+    };
+    return bookingBook;
+  }
+}
 //   returnBook(book, user) {
 //     Validator.checkIfInputIsInstanceOfObject(book, Book);
 //     Validator.checkIfStringIsEmpty(user);

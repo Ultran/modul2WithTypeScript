@@ -1,62 +1,65 @@
+import { IBook } from "./Book";
 import Book from "./Book";
-// import Booking from "./Booking.js";
-// import Validator from "../Validator";
+import Booking from "./Booking";
+import IBooking from "./Booking";
+import IbookingBook from "./Booking";
 
-// function findIndexOfElement(input: any, array: any): number {
-//   const index = array.findIndex((e: any) => e.uuid === input.uuid);
-//   return index;
-// }
-
-interface LibraryInterface {
-  allBooks: object[];
-  bookingList: object[];
-  listOfRentedBooks: any[];
-  addToAllBooksList(value: object): void;
+function findIndexOfElement(input: IBook, array: IBook[]): number {
+  const index = array.findIndex((e: any) => e.uuid === input.uuid);
+  return index;
 }
 
-class Library implements LibraryInterface {
-  allBooks = [];
-  bookingList = [];
+interface ILibrary {
+  allBooks: IBook[];
+  bookingList: any[];
+  listOfRentedBooks: IBook[];
+  addToAllBooksList(book: IBook): void;
+  removeFromAllBooksList(book: IBook): void;
+  rentBookForUser(book: IBook, user: string): void;
+  removeFromListOfRentedBooks(book: IBook): void;
+}
+
+class Library implements ILibrary {
+  allBooks: IBook[] = [];
+  bookingList: any[] = [];
   listOfRentedBooks = [];
   constructor() {}
 
-  addToAllBooksList(value: object): void {
-    //   Validator.checkIfInputIsInstanceOfObject(item, Book);
-    // const index: any = findIndexOfElement(value, this.allBooks);
-    // if (index !== -1) {
-    //   throw Error("book is already in library");
-    // }
-    this.allBooks.push(value);
+  addToAllBooksList(book: IBook): void {
+    const index: number = findIndexOfElement(book, this.allBooks);
+    if (index !== -1) {
+      throw Error("book is already in library");
+    }
+    this.allBooks.push(book);
   }
-  //   removeFromAllBooksList(item) {
-  //     Validator.checkIfInputIsInstanceOfObject(item, Book);
-  //     const index = findIndexOfElement(item, this.allBooks);
-  //     if (index === -1) {
-  //       throw new Error("book is not in bookList, or has been deleted already");
-  //     }
-  //     this.allBooks.splice(index, 1);
-  //   }
-  //   removeFromListOfRentedBooks(item) {
-  //     Validator.checkIfInputIsInstanceOfObject(item, Book);
-  //     const index = findIndexOfElement(item, this.listOfRentedBooks);
-  //     if (index === -1) {
-  //       throw new Error("book is not in bookList, or has been deleted already");
-  //     }
-  //     this.listOfRentedBooks.splice(index, 1);
-  //   }
+  removeFromAllBooksList(book: IBook): void {
+    const index: number = findIndexOfElement(book, this.allBooks);
+    if (index === -1) {
+      throw new Error("book is not in bookList, or has been deleted already");
+    }
+    this.allBooks.splice(index, 1);
+  }
+  removeFromListOfRentedBooks(book: IBook): void {
+    const index = findIndexOfElement(book, this.listOfRentedBooks);
+    if (index === -1) {
+      throw new Error(
+        "book is not in list of rented books, or has been deleted already"
+      );
+    }
+    this.listOfRentedBooks.splice(index, 1);
+  }
 
-  //   rentBookForUser(book, user) {
-  //     Validator.checkIfInputIsInstanceOfObject(book, Book);
-  //     Validator.checkIfStringIsEmpty(user);
-  //     const index = findIndexOfElement(book, this.allBooks);
-  //     if (index === -1) {
-  //       throw new Error("book is not in allBooks, or has been rented already");
-  //     }
-  //     const bookingObject = new Booking().rentBook(book, user);
-  //     this.bookingList.push(bookingObject);
-  //     this.listOfRentedBooks.push(book);
-  //     this.removeFromAllBooksList(book);
-  //   }
+  rentBookForUser(book: IBook, user: string): void {
+    // Validator.checkIfStringIsEmpty(user);
+    const index = findIndexOfElement(book, this.allBooks);
+    if (index === -1) {
+      throw new Error("book is not in allBooks, or has been rented already");
+    }
+    const bookingObject: IBooking = new Booking();
+    this.bookingList.push(bookingObject.rentBook(book, user));
+    // this.listOfRentedBooks.push(book);
+    // this.removeFromAllBooksList(book);
+  }
 
   //   returnRentedBook(book, user) {
   //     Validator.checkIfInputIsInstanceOfObject(book, Book);
@@ -72,13 +75,15 @@ class Library implements LibraryInterface {
   //   }
 }
 const library = new Library();
-let book1 = new Book(
+let book1: Book = new Book(
   "Trzej muszkieterowie",
   "dumas",
   "Książka o muszkieterach"
 );
+const user1: string = "Jonh";
 console.log(book1);
 library.addToAllBooksList(book1);
+library.rentBookForUser(book1, user1);
 
 export default library;
 // const book1 = new Book("Medicus", "N.Gordon", "descriptions/description1.txt");

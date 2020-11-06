@@ -10,15 +10,15 @@ const randomPhoto =
 
 let isJpg: boolean = is.endWith(randomPhoto, ".jpg");
 
-interface BookInterface {
+export interface IBook {
+  uuid: string;
   title: string;
   author: string;
   description: string;
-  uuid: string;
-  randomPhoto: any;
+  randomPhoto: string;
 }
 
-export default class Book implements BookInterface {
+export default class Book implements IBook {
   public uuid = uuidv4();
   public title: string;
   public author: string;
@@ -37,11 +37,3 @@ export default class Book implements BookInterface {
     this.randomPhoto = randomPhoto;
   }
 }
-
-// //import isValidPath from "is-valid-path";
-// // https://picsum.photos/200/300 - w przypadku placeholderów
-
-// Obiekt charakteryzujący książkę:
-// class Book {
-// Ma miec: Tytuł, Autora, uuid, losowe zdjęcie oraz krótki opis
-// }

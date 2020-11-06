@@ -1,7 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
 import MAXIMUM_POSSIBLE_DISCOUNT_PCT from "./helpers";
 
-interface itemInterface {
+
+type possibleKeys =  "name" | "price" | "discount"
+type possibleValueTypes =  string | number
+
+interface IItem {
   uuid: string;
   name: string;
   price: number;
@@ -10,19 +14,21 @@ interface itemInterface {
   quantity: number;
 
   validateDuringChange(
-    key: "name" | "price" | "discount",
-    value: string | number
+    key: possibleKeys,
+    value: possibleValueTypes
   ): void;
+
   changeNamePriceDiscount(
-    key: "name" | "price" | "discount",
-    value: string | number
+    key: possibleKeys,
+    value: possibleValueTypes
   ): void;
+
   addNextCategory(value: string): void;
 }
 
 // CZEMU WŁAŚCIWOŚĆI NIE WYSWIETLAJA SIE PO KOLEI???/???????>>>????/
 
-export default class Item implements itemInterface {
+export default class Item implements IItem {
   public uuid = uuidv4();
   public name;
   public price;
@@ -30,24 +36,32 @@ export default class Item implements itemInterface {
   public discount = 0;
   public quantity = 1;
 
-  constructor(name: string, price: number, categories: string) {
+  constructor(name: string, price: number, initialCategory: string) {
     this.name = name;
     this.price = price;
-    this.categories = [categories];
+    this.categories = [initialCategory];
   }
 
   validateDuringChange(
-    key: "name" | "price" | "discount",
-    value: string | number
+    key: possibleKeys,
+    value: possibleValueTypes
   ): void {
-    let valueIsEmpyString: boolean = value === "";
+
     let valueIsNegativeNumber: boolean = value < 0;
+
     let valueOfDiscountIsToHigh: boolean =
       value > MAXIMUM_POSSIBLE_DISCOUNT_PCT;
 
-    if (key === "name" && valueIsEmpyString) {
+    if (key === "name") {
+      let valueIsEmpyString: boolean = value === "";
+
+
       throw new Error("value is empty");
     }
+    // do poprawy
+    // if('price', 'discount'){}
+
+
     if ((typeof value === "number" && isNaN(value)) || valueIsNegativeNumber) {
       throw Error("value is NaN or under 0");
     }
@@ -57,8 +71,8 @@ export default class Item implements itemInterface {
   }
 
   changeNamePriceDiscount(
-    key: "name" | "price" | "discount",
-    value: string | number
+    key: possibleKeys,
+    value: possibleValueTypes
   ): void {
     this.validateDuringChange(key, value);
     Object.assign(this, { [key]: value });
