@@ -8,71 +8,69 @@ function daysFromMiliseconds(ms: number) {
   return ms / 100 / 60 / 60 / 24 / 10;
 }
 
-export interface IbookingBook {
+export interface IBooking {
   bookingId: string;
-  uuid: string;
   status: "active" | "returned";
   title: string;
   author: string;
   user: string;
-  startDate: string;
   maxDateOfReturn: string;
-}
-
-export interface IBooking {
-  uuid: string;
   rentingStartDate: string;
-  maxDateOfreturnBook: string;
+  returneDate: string;
   cashPenaltyForLate: number;
 }
 
 export default class Booking implements IBooking {
-  uuid = uuidv4();
-  rentingStartDate: string = moment().format("L");
-  maxDateOfreturnBook: string = moment().subtract(8, "days").format("L");
-  cashPenaltyForLate: number = 0;
+  bookingId = uuidv4();
+  bookiId = "";
+  status: "active" | "returned" = "active";
+  title = "";
+  author = "";
+  user = "";
+  rentingStartDate = moment().format("L");
+  maxDateOfReturn = moment().subtract(8, "days").format("L");
+  returneDate = "";
+  cashPenaltyForLate = 0;
   constructor() {}
-  rentBook(book: IBook, user: string): IbookingBook {
-    // Validator.checkIfStringIsEmpty(user);
-    const bookingBook: IbookingBook = {
-      bookingId: this.uuid,
-      uuid: book.uuid,
-      status: "active",
+
+  rentBook(book: IBook, user: string) {
+    const renting = {
+      bookingId: this.bookingId,
+      status: this.status,
       title: book.title,
       author: book.author,
       user: user,
       startDate: this.rentingStartDate,
-      maxDateOfReturn: this.maxDateOfreturnBook,
+      maxDateOfReturn: this.maxDateOfReturn,
     };
-    return bookingBook;
+    return renting;
   }
+    returnBook(book: any, user: string) {
+      const maxDateOfReturne: number = book.maxDateOfReturn.getTime();
+      let dayOfReturneBook = new Date(moment().format("L"));
+      const lateInMs = maxDateOfReturne - dayOfReturneBook.getTime();
+      const lateInDays = Math.floor(daysFromMiliseconds(lateInMs));
+      if (lateInDays > 0) {
+        this.cashPenaltyForLate = lateInDays * cashPenaltyForOneDayLate;
+        console.log(`Late charge = ${this.cashPenaltyForLate}`);
+      }
+
+      const returnedBooking = {
+        bookingId: book.bookingId,
+        uuid: book.uuid,
+        status: "returned",
+        title: book.title,
+        author: book.author,
+        user: user,
+        startDate: this.rentingStartDate,
+        maxDateOfReturn: this.maxDateOfreturnBook,
+        dateOfReturn: dayOfReturneBook,
+        cashPenaltyForLate: this.cashPenaltyForLate,
+      };
+
+  //     return returnedBooking;
+  // }
 }
-//   returnBook(book, user) {
-//     Validator.checkIfInputIsInstanceOfObject(book, Book);
-//     Validator.checkIfStringIsEmpty(user);
-//     const maxDateOfReturne = book.maxDateOfReturn;
-//     const dayOfReturneBook = moment().format("L");
-//     const lateInMs = new Date(dayOfReturneBook) - new Date(maxDateOfReturne);
-//     const lateInDays = Math.floor(daysFromMiliseconds(lateInMs));
-//     if (lateInDays > 0) {
-//       this.cashPenaltyForLate = lateInDays * cashPenaltyForOneDayLate;
-//       console.log(`Late charge = ${this.cashPenaltyForLate}`);
-//     }
-
-//     const returnedBooking = {
-//       bookingId: book.bookingId,
-//       uuid: book.uuid,
-//       status: "returned",
-//       title: book.title,
-//       author: book.author,
-//       user: user,
-//       startDate: this.rentingStartDate,
-//       maxDateOfReturn: this.maxDateOfreturnBook,
-//       dateOfReturn: dayOfReturneBook,
-//       cashPenaltyForLate: this.cashPenaltyForLate,
-//     };
-
-//     return returnedBooking;
 
 // const day = moment(book.startDate).fromNow("m");
 // console.log(day);
@@ -80,6 +78,3 @@ export default class Booking implements IBooking {
 // if (numbers > 7 && is.include(day, "days")) {
 //   this.cashPenaltyForLate = numbers - 7 * cashPenaltyForOneDayLate;
 //   console.log(this.cashPenaltyForLate);
-// }
-//   }
-// }

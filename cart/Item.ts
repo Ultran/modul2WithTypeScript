@@ -1,11 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 import MAXIMUM_POSSIBLE_DISCOUNT_PCT from "./helpers";
 
+type possibleKeys = "name" | "price" | "discount";
+type possibleValueTypes = string | number;
 
-type possibleKeys =  "name" | "price" | "discount"
-type possibleValueTypes =  string | number
-
-interface IItem {
+export interface IItem {
   uuid: string;
   name: string;
   price: number;
@@ -13,15 +12,9 @@ interface IItem {
   discount: number;
   quantity: number;
 
-  validateDuringChange(
-    key: possibleKeys,
-    value: possibleValueTypes
-  ): void;
+  validateDuringChange(key: possibleKeys, value: possibleValueTypes): void;
 
-  changeNamePriceDiscount(
-    key: possibleKeys,
-    value: possibleValueTypes
-  ): void;
+  changeNamePriceDiscount(key: possibleKeys, value: possibleValueTypes): void;
 
   addNextCategory(value: string): void;
 }
@@ -42,11 +35,7 @@ export default class Item implements IItem {
     this.categories = [initialCategory];
   }
 
-  validateDuringChange(
-    key: possibleKeys,
-    value: possibleValueTypes
-  ): void {
-
+  validateDuringChange(key: possibleKeys, value: possibleValueTypes): void {
     let valueIsNegativeNumber: boolean = value < 0;
 
     let valueOfDiscountIsToHigh: boolean =
@@ -55,12 +44,10 @@ export default class Item implements IItem {
     if (key === "name") {
       let valueIsEmpyString: boolean = value === "";
 
-
       throw new Error("value is empty");
     }
     // do poprawy
     // if('price', 'discount'){}
-
 
     if ((typeof value === "number" && isNaN(value)) || valueIsNegativeNumber) {
       throw Error("value is NaN or under 0");
@@ -70,10 +57,7 @@ export default class Item implements IItem {
     }
   }
 
-  changeNamePriceDiscount(
-    key: possibleKeys,
-    value: possibleValueTypes
-  ): void {
+  changeNamePriceDiscount(key: possibleKeys, value: possibleValueTypes): void {
     this.validateDuringChange(key, value);
     Object.assign(this, { [key]: value });
     // this[key] = value;

@@ -2,7 +2,6 @@ import { IBook } from "./Book";
 import Book from "./Book";
 import Booking from "./Booking";
 import IBooking from "./Booking";
-import IbookingBook from "./Booking";
 
 function findIndexOfElement(input: IBook, array: IBook[]): number {
   const index = array.findIndex((e: any) => e.uuid === input.uuid);
@@ -17,12 +16,13 @@ interface ILibrary {
   removeFromAllBooksList(book: IBook): void;
   rentBookForUser(book: IBook, user: string): void;
   removeFromListOfRentedBooks(book: IBook): void;
+  // returnRentedBook(book: IBook, user: string): void;
 }
 
 class Library implements ILibrary {
   allBooks: IBook[] = [];
   bookingList: any[] = [];
-  listOfRentedBooks = [];
+  listOfRentedBooks: IBook[] = [];
   constructor() {}
 
   addToAllBooksList(book: IBook): void {
@@ -57,53 +57,58 @@ class Library implements ILibrary {
     }
     const bookingObject: IBooking = new Booking();
     this.bookingList.push(bookingObject.rentBook(book, user));
-    // this.listOfRentedBooks.push(book);
-    // this.removeFromAllBooksList(book);
+    this.listOfRentedBooks.push(book);
+    this.removeFromAllBooksList(book);
   }
 
-  //   returnRentedBook(book, user) {
-  //     Validator.checkIfInputIsInstanceOfObject(book, Book);
-  //     Validator.checkIfStringIsEmpty(user);
-  //     const index = findIndexOfElement(book, this.bookingList);
-  //     const returnedBooking = new Booking().returnBook(
-  //       this.bookingList[index],
-  //       user
-  //     );
-  //     this.bookingList[index] = returnedBooking;
-  //     this.addToAllBooksList(book);
-  //     this.removeFromListOfRentedBooks(book);
-  //   }
+  returnRentedBook(book: IBook, user: string) {
+    const index = findIndexOfElement(book, this.bookingList);
+    const returnedBooking = new Booking().returnBook(
+      this.bookingList[index],
+      user
+    );
+    this.bookingList[index] = returnedBooking;
+    this.addToAllBooksList(book);
+    this.removeFromListOfRentedBooks(book);
+  }
 }
 const library = new Library();
-let book1: Book = new Book(
-  "Trzej muszkieterowie",
-  "dumas",
-  "Książka o muszkieterach"
+
+const user1: string = "John";
+const user2: string = "Joanna";
+
+const book1: IBook = new Book(
+  "Medicus",
+  "N.Gordon",
+  "descriptions/description1.txt"
 );
-const user1: string = "Jonh";
-console.log(book1);
+const book2: IBook = new Book(
+  "Zły",
+  "L.Tyrmand",
+  "descriptions/description2.txt"
+);
+const book3: IBook = new Book(
+  "Diuna",
+  "F.Herbert",
+  "descriptions/description1.txt"
+);
+const book4: IBook = new Book(
+  "Solaris",
+  "S.Lem",
+  "descriptions/description2.txt"
+);
+
 library.addToAllBooksList(book1);
+library.addToAllBooksList(book2);
+library.addToAllBooksList(book3);
+library.addToAllBooksList(book4);
+
 library.rentBookForUser(book1, user1);
+library.rentBookForUser(book2, user2);
+library.returnRentedBook(book1, user1);
+library.returnRentedBook(book2, user2);
 
 export default library;
-// const book1 = new Book("Medicus", "N.Gordon", "descriptions/description1.txt");
-// const book2 = new Book("Zły", "L.Tyrmand", "descriptions/description2.txt");
-// const book3 = new Book("Diuna", "F.Herbert", "descriptions/description1.txt");
-// const book4 = new Book("Solaris", "S.Lem", "descriptions/description2.txt");
-
-// library.addToAllBooksList(book1);
-// library.addToAllBooksList(book2);
-// library.addToAllBooksList(book3);
-// library.addToAllBooksList(book4);
-// library.removeFromAllBooksList(book1);
-// library.rentBookForUser(book2, user1);
-// library.returnRentedBook(book2, user1);
-
-// library.rentBookForUser(book1, user1);
-// library.rentBookForUser(book2, user2);
-// library.returnRentedBook(book2, user2);
-// library.rentBookForUser(book2, user2);
-// library.rentBookForUser(book2, user2);
 
 // Obiekt charakteryzujący bibliotekę:
 // class Library {

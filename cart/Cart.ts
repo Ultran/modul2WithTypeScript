@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import Item, {IItem} from "./Item";
+import Item, { IItem } from "./Item";
 
 // interface IWithUUID{
 //   uuid: string;
@@ -8,7 +8,7 @@ import Item, {IItem} from "./Item";
 // function findByUuid(list:T[], item:T){
 // }
 
-interface ISum{}
+interface ISum {}
 interface ICart {
   uuid: string;
   items: IItem[];
@@ -22,7 +22,7 @@ interface ICart {
 }
 class Cart implements ICart {
   uuid = uuidv4();
-  items: object[] = [];
+  items: IItem[] = [];
   discountValue = 0;
   discountCode = null;
   sum = {
@@ -68,12 +68,10 @@ class Cart implements ICart {
             (1 - currentValue.discount) *
             currentValue.quantity;
 
-
         total.discount =
           total.discount +
           currentValue.discount * currentValue.price * currentValue.quantity;
 
-          
         total.quantity = total.quantity + currentValue.quantity;
 
         return total;
