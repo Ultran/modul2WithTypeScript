@@ -4,24 +4,28 @@ import Booking from "./Booking";
 import IBooking from "./Booking";
 
 function findIndexOfElement(input: IBook, array: IBook[]): number {
-  const index = array.findIndex((e: any) => e.uuid === input.uuid);
+  const index = array.findIndex((e: IBook) => e.uuid === input.uuid);
+  return index;
+}
+
+function findBookingElement(book: IBook, array: IBooking[]): number {
+  const index = array.findIndex((e: IBooking) => e.bookId === book.uuid);
   return index;
 }
 
 interface ILibrary {
   allBooks: IBook[];
-  bookingList: any[];
+  bookingList: IBooking[];
   listOfRentedBooks: IBook[];
   addToAllBooksList(book: IBook): void;
   removeFromAllBooksList(book: IBook): void;
   rentBookForUser(book: IBook, user: string): void;
   removeFromListOfRentedBooks(book: IBook): void;
-  // returnRentedBook(book: IBook, user: string): void;
 }
 
 class Library implements ILibrary {
   allBooks: IBook[] = [];
-  bookingList: any[] = [];
+  bookingList: IBooking[] = [];
   listOfRentedBooks: IBook[] = [];
   constructor() {}
 
@@ -50,24 +54,23 @@ class Library implements ILibrary {
   }
 
   rentBookForUser(book: IBook, user: string): void {
-    // Validator.checkIfStringIsEmpty(user);
     const index = findIndexOfElement(book, this.allBooks);
     if (index === -1) {
       throw new Error("book is not in allBooks, or has been rented already");
     }
-    const bookingObject: IBooking = new Booking();
-    this.bookingList.push(bookingObject.rentBook(book, user));
+    this.bookingList.push(new Booking(book, user));
     this.listOfRentedBooks.push(book);
     this.removeFromAllBooksList(book);
   }
 
-  returnRentedBook(book: IBook, user: string) {
-    const index = findIndexOfElement(book, this.bookingList);
-    const returnedBooking = new Booking().returnBook(
-      this.bookingList[index],
-      user
+  returnRentedBook(book: IBook): void {
+    const index: number = findBookingElement(book, this.bookingList);
+    const bookingObject = this.bookingList[index];
+    const returnedBooking: any = this.bookingList[index].returnBook(
+      bookingObject
     );
-    this.bookingList[index] = returnedBooking;
+    this.bookingList.splice(index, 1);
+    this.bookingList.push(returnedBooking);
     this.addToAllBooksList(book);
     this.removeFromListOfRentedBooks(book);
   }
@@ -105,8 +108,9 @@ library.addToAllBooksList(book4);
 
 library.rentBookForUser(book1, user1);
 library.rentBookForUser(book2, user2);
-library.returnRentedBook(book1, user1);
-library.returnRentedBook(book2, user2);
+library.returnRentedBook(book1);
+// library.returnRentedBook(book1, user1);
+// library.returnRentedBook(book2, user2);
 
 export default library;
 

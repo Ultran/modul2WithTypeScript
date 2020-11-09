@@ -10,6 +10,7 @@ function daysFromMiliseconds(ms: number) {
 
 export interface IBooking {
   bookingId: string;
+  bookId: string;
   status: "active" | "returned";
   title: string;
   author: string;
@@ -18,11 +19,12 @@ export interface IBooking {
   rentingStartDate: string;
   returneDate: string;
   cashPenaltyForLate: number;
+  returnBook?(book: IBooking): IBooking;
 }
 
 export default class Booking implements IBooking {
   bookingId = uuidv4();
-  bookiId = "";
+  bookId = "";
   status: "active" | "returned" = "active";
   title = "";
   author = "";
@@ -31,46 +33,53 @@ export default class Booking implements IBooking {
   maxDateOfReturn = moment().subtract(8, "days").format("L");
   returneDate = "";
   cashPenaltyForLate = 0;
-  constructor() {}
 
-  rentBook(book: IBook, user: string) {
-    const renting = {
-      bookingId: this.bookingId,
-      status: this.status,
-      title: book.title,
-      author: book.author,
-      user: user,
-      startDate: this.rentingStartDate,
-      maxDateOfReturn: this.maxDateOfReturn,
-    };
-    return renting;
+  constructor(book: IBook, user: string) {
+    this.bookId = book.uuid;
+    this.title = book.title;
+    this.author = book.author;
+    this.user = user;
   }
-    returnBook(book: any, user: string) {
-      const maxDateOfReturne: number = book.maxDateOfReturn.getTime();
-      let dayOfReturneBook = new Date(moment().format("L"));
-      const lateInMs = maxDateOfReturne - dayOfReturneBook.getTime();
-      const lateInDays = Math.floor(daysFromMiliseconds(lateInMs));
-      if (lateInDays > 0) {
-        this.cashPenaltyForLate = lateInDays * cashPenaltyForOneDayLate;
-        console.log(`Late charge = ${this.cashPenaltyForLate}`);
-      }
 
-      const returnedBooking = {
-        bookingId: book.bookingId,
-        uuid: book.uuid,
-        status: "returned",
-        title: book.title,
-        author: book.author,
-        user: user,
-        startDate: this.rentingStartDate,
-        maxDateOfReturn: this.maxDateOfreturnBook,
-        dateOfReturn: dayOfReturneBook,
-        cashPenaltyForLate: this.cashPenaltyForLate,
-      };
-
-  //     return returnedBooking;
-  // }
+  returnBook(booking: IBooking): IBooking {
+    let returnedBooking: IBooking = {
+      bookingId: booking.bookingId,
+      bookId: booking.bookId,
+      status: "returned",
+      title: booking.title,
+      author: booking.author,
+      user: booking.user,
+      rentingStartDate: moment().format("L"),
+      maxDateOfReturn: moment().subtract(8, "days").format("L"),
+      returneDate: moment().format("L"),
+      cashPenaltyForLate: 1000000,
+    };
+    return returnedBooking;
+  }
 }
+// const maxDateOfReturne: number = book.maxDateOfReturn.getTime();
+// let dayOfReturneBook = new Date(moment().format("L"));
+// const lateInMs = maxDateOfReturne - dayOfReturneBook.getTime();
+// const lateInDays = Math.floor(daysFromMiliseconds(lateInMs));
+// if (lateInDays > 0) {
+//   this.cashPenaltyForLate = lateInDays * cashPenaltyForOneDayLate;
+//   console.log(`Late charge = ${this.cashPenaltyForLate}`);
+// }
+
+// const returnedBooking = {
+//   bookingId: book.bookingId,
+//   uuid: book.uuid,
+//   status: "returned",
+//   title: book.title,
+//   author: book.author,
+//   user: user,
+//   startDate: this.rentingStartDate,
+//   maxDateOfReturn: this.maxDateOfreturnBook,
+//   dateOfReturn: dayOfReturneBook,
+//   cashPenaltyForLate: this.cashPenaltyForLate,
+// };
+
+// return returnedBooking;
 
 // const day = moment(book.startDate).fromNow("m");
 // console.log(day);
