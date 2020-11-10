@@ -1,7 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
 import Validator from "../validator/Validator";
-import is from "is_js";
-import fs from "fs";
 import { isJpg, randomPhoto } from "./heplers";
 
 export interface IBook {
