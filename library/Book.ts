@@ -2,13 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import Validator from "../validator/Validator";
 import is from "is_js";
 import fs from "fs";
-// import Validator from "../Validator.js";
-
-const fileWithPhotos = fs.readdirSync("./Library/Photos");
-const randomPhoto =
-  fileWithPhotos[Math.floor(Math.random() * fileWithPhotos.length)];
-
-let isJpg: boolean = is.endWith(randomPhoto, ".jpg");
+import { isJpg, randomPhoto } from "./heplers";
 
 export interface IBook {
   uuid: string;

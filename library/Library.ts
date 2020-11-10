@@ -10,6 +10,9 @@ function findIndexOfElement(input: IBook, array: IBook[]): number {
 
 function findBookingElement(book: IBook, array: IBooking[]): number {
   const index = array.findIndex((e: IBooking) => e.bookId === book.uuid);
+  if (index === -1) {
+    throw new Error("Cant find booking in booking list");
+  }
   return index;
 }
 
@@ -65,7 +68,7 @@ class Library implements ILibrary {
 
   returnRentedBook(book: IBook): void {
     const index: number = findBookingElement(book, this.bookingList);
-    const bookingObject = this.bookingList[index];
+    const bookingObject: IBooking = this.bookingList[index];
     const returnedBooking: any = this.bookingList[index].returnBook(
       bookingObject
     );
@@ -113,13 +116,3 @@ library.returnRentedBook(book1);
 // library.returnRentedBook(book2, user2);
 
 export default library;
-
-// Obiekt charakteryzujący bibliotekę:
-// class Library {
-// Ma miec: listę książek, listę wypożyczeń oraz listę wypożyczonych książek
-// Ma umożliwiać:
-// - dodawanie książek do listy
-// - usuwanie książek z listy
-// - wypożyczanie książki dla usera X
-// - oddanie wypożyczania książki
-// }

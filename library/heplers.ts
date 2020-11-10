@@ -1,8 +1,13 @@
-// // example helper function
-// function someFn(){
-//     console.log('check if import works')
-// }
+import moment from "moment";
+import fs from "fs";
+// BOOK
 
-// export default {
-//     someFn
-// }
+const fileWithPhotos = fs.readdirSync("./Library/Photos");
+export const randomPhoto =
+  fileWithPhotos[Math.floor(Math.random() * fileWithPhotos.length)];
+
+export const isJpg: boolean = is.endWith(randomPhoto, ".jpg");
+
+// Booking
+
+// Library
