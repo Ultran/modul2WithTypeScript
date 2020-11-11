@@ -1,11 +1,11 @@
-// import world from "./task";
+import superUser from "./SuperUser";
 
-// function main() {
-//   try {
-//     console.log("works", world);
-//   } catch (err) {
-//     console.error(err.message);
-//   }
-// }
+function main() {
+  try {
+    console.log("works", superUser);
+  } catch (err) {
+    console.error(err.message);
+  }
+}
 
-// export default main;
+export default main;
