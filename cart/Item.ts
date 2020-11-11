@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import MAXIMUM_POSSIBLE_DISCOUNT_PCT from "./helpers";
+import Validator from "../validator/Validator";
 
 type possibleKeys = "name" | "price" | "discount";
 type possibleValueTypes = string | number;
@@ -19,12 +20,10 @@ export interface IItem {
   addNextCategory(value: string): void;
 }
 
-// CZEMU WŁAŚCIWOŚĆI NIE WYSWIETLAJA SIE PO KOLEI???/???????>>>????/
-
 export default class Item implements IItem {
   public uuid = uuidv4();
-  public name;
-  public price;
+  public name: string;
+  public price: number;
   public categories: string[];
   public discount = 0;
   public quantity = 1;
@@ -36,31 +35,32 @@ export default class Item implements IItem {
   }
 
   validateDuringChange(key: possibleKeys, value: possibleValueTypes): void {
-    let valueIsNegativeNumber: boolean = value < 0;
+    if (typeof value === "number") {
+      let numberIsNaN: boolean = isNaN(value);
+      let valueIsNegativeNumber: boolean = value < 0;
+      let valueOfDiscountIsToHigh: boolean =
+        value > MAXIMUM_POSSIBLE_DISCOUNT_PCT;
 
-    let valueOfDiscountIsToHigh: boolean =
-      value > MAXIMUM_POSSIBLE_DISCOUNT_PCT;
+      if (numberIsNaN || valueIsNegativeNumber || valueOfDiscountIsToHigh) {
+        throw new Error("is not a number, is negativ or discount is to high");
+      }
 
-    if (key === "name") {
-      let valueIsEmpyString: boolean = value === "";
-
-      throw new Error("value is empty");
-    }
-    // do poprawy
-    // if('price', 'discount'){}
-
-    if ((typeof value === "number" && isNaN(value)) || valueIsNegativeNumber) {
-      throw Error("value is NaN or under 0");
-    }
-    if (key === "discount" && valueOfDiscountIsToHigh) {
-      throw new Error("discount must be < 0.8 PCT");
+      if (key !== "price" && key !== "discount") {
+        throw new Error("incorrect key possible -> [price, discount]");
+      }
+    } else if (typeof value === "string") {
+      Validator.checkIfStringIsEmpty(value);
+      if (key !== "name") {
+        throw new Error("key is incorrect");
+      }
+    } else {
+      throw new Error("incorrect type of value");
     }
   }
 
   changeNamePriceDiscount(key: possibleKeys, value: possibleValueTypes): void {
     this.validateDuringChange(key, value);
     Object.assign(this, { [key]: value });
-    // this[key] = value;
   }
 
   addNextCategory(value: string): void {

@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
 import Item, { IItem } from "./Item";
 
-// interface IWithUUID{
-//   uuid: string;
-// }
-
-// function findByUuid(list:T[], item:T){
-// }
+function findByUuid(array: IItem[], item: IItem): number {
+  const index: number = array.findIndex(
+    (e: IItem): boolean => e.uuid === item.uuid
+  );
+  return index;
+}
 
 interface ISum {}
 interface ICart {
@@ -33,10 +33,8 @@ class Cart implements ICart {
 
   constructor() {}
 
-  addItemToCart(item: any): void {
-    const index: number = this.items.findIndex(
-      (e: any): boolean => e.uuid === item.uuid
-    );
+  addItemToCart(item: IItem): void {
+    const index = findByUuid(this.items, item);
     if (index === -1) {
       this.items.push(item);
     } else {
@@ -44,8 +42,8 @@ class Cart implements ICart {
     }
   }
 
-  removeItemfromCart(item: any): void {
-    const index = this.items.findIndex((e: any) => e.uuid === item.uuid);
+  removeItemfromCart(item: IItem): void {
+    let index = findByUuid(this.items, item);
     if (index === -1) {
       throw new Error("product is not in cart, or has been deleted already");
     }

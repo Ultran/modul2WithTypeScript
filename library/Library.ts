@@ -78,6 +78,7 @@ class Library implements ILibrary {
     this.removeFromListOfRentedBooks(book);
   }
 }
+
 const library = new Library();
 
 const user1: string = "John";
@@ -112,7 +113,5 @@ library.addToAllBooksList(book4);
 library.rentBookForUser(book1, user1);
 library.rentBookForUser(book2, user2);
 library.returnRentedBook(book1);
-// library.returnRentedBook(book1, user1);
-// library.returnRentedBook(book2, user2);
 
 export default library;
