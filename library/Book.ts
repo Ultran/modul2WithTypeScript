@@ -1,6 +1,6 @@
-import { v4 as uuidv4 } from "uuid";
 import Validator from "../validator/Validator";
 import { isJpg, randomPhoto } from "./heplers";
+import { v4 as uuidv4 } from "uuid";
 
 export interface IBook {
   uuid: string;

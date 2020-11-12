@@ -1,7 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
-import moment from "moment";
 import { IBook } from "./Book";
 import { cashPenaltyForOneDayLate } from "./heplers";
+import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
 
 function cashPenalty(booking: IBooking): number {
   const maxDateToReturne: moment.Moment = moment(booking.maxDateOfReturn);

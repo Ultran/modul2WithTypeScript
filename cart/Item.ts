@@ -1,6 +1,6 @@
-import { v4 as uuidv4 } from "uuid";
 import MAXIMUM_POSSIBLE_DISCOUNT_PCT from "./helpers";
 import Validator from "../validator/Validator";
+import { v4 as uuidv4 } from "uuid";
 
 type possibleKeys = "name" | "price" | "discount";
 type possibleValueTypes = string | number;

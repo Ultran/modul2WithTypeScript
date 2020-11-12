@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from "uuid";
 import Item, { IItem } from "./Item";
+import { v4 as uuidv4 } from "uuid";
 
 function findByUuid(array: IItem[], item: IItem): number {
   const index: number = array.findIndex(
