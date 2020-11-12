@@ -29,14 +29,14 @@ export default class User implements IUser {
     gender: string,
     email: string
   ) {
-    // Validator.checkIfStringIsEmpty(name);
-    // Validator.checkIfStringIsEmpty(surname);
-    // Validator.checkIfStringIsEmpty(password);
-    // Validator.checkIfDateIsValid(birth);
-    // Validator.checkPassword(password);
-    // Validator.checkEmailAdressIsValid(email);
-    // Validator.checkIfDataIsInArray(accessLevel, ["user", "admin"]);
-    // Validator.checkIfDataIsInArray(gender, ["male", "female"]);
+    Validator.checkIfStringIsEmpty(name);
+    Validator.checkIfStringIsEmpty(surname);
+    Validator.checkIfStringIsEmpty(password);
+    Validator.checkIfDateIsValid(birth);
+    Validator.checkPassword(password);
+    Validator.checkEmailAdressIsValid(email);
+    Validator.checkIfDataIsInArray(this.accessLevel, ["user", "admin"]);
+    Validator.checkIfDataIsInArray(gender, ["male", "female"]);
 
     this.name = name;
     this.surname = surname;
